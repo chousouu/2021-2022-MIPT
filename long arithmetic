@@ -1,0 +1,126 @@
+#include <stdio.h>
+#include <stdlib.h>
+int* number_scanf(int n);
+int* number_print(int*p, int n);
+int* one_length(int n, int m, int *p);
+int compare(int n, int m, int *p, int *q);
+//int sum(int n, int m, int *p, int *q);
+
+//сумма нерабочая вышла
+
+int main() {
+    int n = 0;
+    int m = 0;
+
+    scanf("%d", &n); // p
+    scanf("%d", &m); //q
+
+    int *p, *q;
+    p = number_scanf(n);
+    q = number_scanf(m);
+
+
+    if (n > m) {
+        q = one_length(n, m, q);
+        number_print (q, n); // n - т.к n > m
+    }
+    if (n < m) {
+        p = one_length(n, m, p);
+        number_print(p, m);
+    }
+
+    int res = compare(n,m,p,q);
+    if (res > 0) {
+        printf(" first is greater than second\n ");
+    }
+    else {
+        printf(" second is greater than first\n ");
+    }
+    //sum(n, m, p, q);
+
+
+
+
+    free(p);
+    free(q);
+    return 0;
+}
+
+
+// считывания числа 
+int* number_scanf(int n) {
+    int *p = (int*)malloc(sizeof(int) * n);
+    for (int i = 0; i < n; i++){
+        scanf("%d", &p[i]);
+    }
+    return p;
+}
+
+
+// печать числа
+int* number_print(int*p, int n) {
+    for (int i = 0; i < n; i++) {
+        printf("%d", p[i]);
+    }
+    printf("\n");
+    return 0;
+}
+// общая длина - идея в том, чтобы каллоком заполнить память нулями, а потом от разницы длины начать заполнять 
+int* one_length(int n, int m, int *q) {
+    int temp = 0;
+    if (m > n) {
+        temp = n;
+        n = m;
+        m = temp;
+    }
+    
+    int *same = (int*)calloc(n,sizeof(int));
+    int k = 0;
+    for (int i = n - m; i < n; i++) {
+        same[i] = q[k];    
+        k++;
+    }
+    return same;
+}
+
+// n == m - > пока x[i] > y[i], разница < 0 = x > y; 
+
+
+int compare(int n, int m, int *p, int *q) {
+    if (n == m) {
+        int i = 0;
+        while ((p[i] - q[i]) == 0) {
+            i++;
+        }
+        return p[i] - q[i];
+    }   
+    else {
+        return n-m;
+    }
+}
+
+//планировалось суммировать с конца элементы массивов, с учетом lishnee (остатка, который мог образоваться, когда число + число > 9)
+// но я что-то сломал 
+/*
+int sum(int n, int m, int *p, int *q) {
+    int lishnee = 0;
+    int *summary = (int*)calloc(n,sizeof(int));
+    for (int i = n ; i >= 0; i--) {
+        summary = one_length(n, m, q);
+        number_print(summary,n);
+        if (p[i]+q[i] + lishnee > 9) {
+                summary[i] = (q[i] + p[i] + lishnee) % 10;
+                lishnee = (q[i] + p[i] + lishnee) / 10 ;
+                printf("%d", summary[i]);
+        }
+        else{
+            summary[i] = q[i] + p[i] + lishnee;
+            lishnee = 0;
+            printf("%d", summary[i]);
+        }
+    }
+
+    printf("\n");
+    return 0;
+}
+*/
