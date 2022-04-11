@@ -32,6 +32,7 @@ int main()
 		: "=d" (res)
 		: "a" (p_arr), "c" (N_count)
 	);
+    
     printf("After asm:\nres = %lld\narr = %p", res, p_arr);
 
     return 0;
