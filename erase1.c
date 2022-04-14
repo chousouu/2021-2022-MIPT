@@ -6,6 +6,7 @@ struct Node {
     struct Node *right;
     struct Node *parent;
 };
+struct Node *root;
 
 struct Node * Insert(struct Node * tree, int x);
 struct Node *Minimum(struct Node *tree); 
@@ -97,19 +98,22 @@ struct Node *parent_search(struct Node *tree, struct Node *Search) {
 
 void Transplant(struct Node *tree, struct Node *current, struct Node *changeTo) {
     struct Node *current_parent = parent_search(tree, current);
-    if ( current = current_parent->left) {
+    struct Node *changeto_parent = parent_search(tree, changeTo);
+    //if (current_parent == NULL) {
+      //  root = changeTo;
+    //}
+    else if ( current == current_parent->left) {
         current_parent->left = changeTo;
     }
-    else {
+    else if {
         current_parent->right = changeTo;
     }
     if (changeTo != NULL) {
-        struct Node *changeto_parent = parent_search(tree, changeTo);
         changeto_parent = current_parent;
     }
 }
 
-void Erase(struct Node *tree, struct Node *z) {  // z - хотим удалить
+void Erase(struct Node *tree, struct Node *z) {  
     if (z->left == NULL) {
         Transplant(tree, z, z->right);
     }
