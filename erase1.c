@@ -4,9 +4,8 @@ struct Node {
     int val;
     struct Node *left;
     struct Node *right;
-    struct Node *parent;
 };
-struct Node *root;
+
 
 struct Node * Insert(struct Node * tree, int x);
 struct Node *Minimum(struct Node *tree); 
@@ -80,6 +79,9 @@ struct Node* Search(struct Node *tree, int k) {
     }
 }
 struct Node *parent_search(struct Node *tree, struct Node *Search) {
+   // if (tree == Search ) {
+    //    return NULL;
+  //  }
     if ((tree->right == Search) || ((tree->left) == Search)) {
         return tree;
     }
@@ -93,19 +95,16 @@ struct Node *parent_search(struct Node *tree, struct Node *Search) {
     }
 }
 
-
-
-
 void Transplant(struct Node *tree, struct Node *current, struct Node *changeTo) {
     struct Node *current_parent = parent_search(tree, current);
     struct Node *changeto_parent = parent_search(tree, changeTo);
-    //if (current_parent == NULL) {
-      //  root = changeTo;
-    //}
-    else if ( current == current_parent->left) {
+  //  if (current_parent == NULL) {
+    //    tree = changeTo;
+   // }
+    if ( current == current_parent->left) {
         current_parent->left = changeTo;
     }
-    else if {
+    else {
         current_parent->right = changeTo;
     }
     if (changeTo != NULL) {
