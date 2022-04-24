@@ -19,50 +19,57 @@ void reg_printer(struct Info *p_Registers);
 int main() {
     struct Info Registers = {0, 0, 0, 0}; 
     struct Info *p_Registers = &Registers;
-
-    reg_printer(p_Registers);
+    printf("=========================\n");
 
     char command[8]; 
-    char second_register[3] = {0, 0, 0};
-    int x;
+    char second_register[4];    
     char c;
 
-    while(1) {
-        for (int i = 0; i < 9; i++) {
-            if ((c = getchar()) != '\0') {
-                command[i] = c;
-            }
-        }
+    int exit_condition = 1;
+    
+    while(exit_condition != 0) {
         c = getchar();
-        if  ( c != '\0') { 
+        if (c == 'r'){
+            return 0;
+        }
+            command[0] = c;
+            printf("=== [0]:%c\n====", command[0]);
+            for (int i = 1; i < 9; i++) {
+                c = getchar();
+                command[i] = c;
+                printf("[%d]:%c ", i, command[i]);
+            }
+            c = getchar(); //[0] second reg 
             second_register[0] = c;
-            c = getchar(); 
-            if ((c != '\0') || (c != ' ')) { 
+            c = getchar(); //[1]
+            if (c != '\0') {
                 second_register[1] = c;
                 c = getchar();
+                second_register[2] = c;
+                c = getchar();
+            }
+            printf("\n");
+            printf("SECOND REGISTER:\n");
+
+            for (int i = 0; i < 4; i++) {
+                 printf("[%d]:%c ", i, second_register[i]);
+            }
+
+            int k = detect_symbol_one(command);
+            switch(command[0]) {
+                case 'm': 
+                mov(second_register, p_Registers, k);
+                break;
+                case 'a': 
+                add(second_register, p_Registers, k);
+                break;
+                case 's': 
+                sub(second_register, p_Registers, k);
+                break;
             }
         }
-        command[8] = ' ';
-        int k = detect_symbol_one(command);
-        switch(command[0]) {
-            case 'm': 
-                mov(second_register, p_Registers, k);
-                reg_printer(p_Registers);
-                break;
-            case 'a':
-                add(second_register, p_Registers, k);
-                reg_printer(p_Registers);
-                break;
-            case 's':
-                sub(second_register, p_Registers, k);
-                reg_printer(p_Registers);
-                break;
-         }
-    }
+
 }
-
-
-
 
 int detect_symbol_one(char *command) { //detects first registers 2nd symbol(%) -> ex: mov e%x ...
     if (command[5] == 'a') {
@@ -118,12 +125,12 @@ int value_of_second_reg(struct Info *p_Registers, char* second_register) {
 }
 
 void mov(char* second_register, struct Info *p_Registers, int k) {  //k - 2nd symbol 1st reg
-    printf("second reg : %c\n", second_register[0]);
+    printf("\nsecond reg : %c\n", second_register[0]);
     printf("k : %d\n", k);
     reg_printer(p_Registers);
     if (second_register[0] != 'e') {
         int int_char = second_register[0] - 48; //число, явл. вторым регистром
-        printf("int_char : %d\n", int_char);
+       // printf("int_char : %d\n", int_char);
         switch(k) {
             case 0: 
                 p_Registers->eax = int_char;
@@ -161,6 +168,7 @@ void mov(char* second_register, struct Info *p_Registers, int k) {  //k - 2nd sy
                 break;  
         }
     }
+    reg_printer(p_Registers);
     return;
 }
 
@@ -208,6 +216,7 @@ void add(char* second_register, struct Info *p_Registers, int k) {
                 break;  
         }
     }
+    reg_printer(p_Registers);
     return;
 }
 
@@ -255,10 +264,12 @@ void sub(char* second_register, struct Info *p_Registers, int k) {
                 break;  
         }
     }
+    reg_printer(p_Registers);
     return;
 }
 
 
 void reg_printer(struct Info *p_Registers) {
     printf("Registers :[ %d %d %d %d]\n", p_Registers->eax, p_Registers->ebx, p_Registers->ecx, p_Registers->edx);
+    return;
 }
