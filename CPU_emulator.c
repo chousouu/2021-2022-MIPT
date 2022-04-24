@@ -42,7 +42,7 @@ int main() {
             c = getchar(); //[0] second reg 
             second_register[0] = c;
             c = getchar(); //[1]
-            if (c != '\0') {
+            if (c != '\n') {
                 second_register[1] = c;
                 c = getchar();
                 second_register[2] = c;
