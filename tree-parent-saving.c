@@ -18,6 +18,7 @@ int main() {
     struct Node *tree = NULL;
     int x = 0;
     scanf("%d", &x);
+    int is_root = x;
     while (x != 0) {
         tree = Insert(tree, x, NULL);
         scanf("%d", &x);
@@ -28,12 +29,16 @@ int main() {
     printf("Element you want to delete : ");
     int delete_elem;
     scanf("%d", &delete_elem);
-    struct Node *del_Elem_struct = Search(tree, delete_elem);
-    Erase(tree, del_Elem_struct);
-
-    printf("\n");
-    InOrder(tree);
-
+    if (is_root == delete_elem) {
+        InOrder(tree->left);
+        InOrder(tree->right);
+    }
+    else { 
+        struct Node *del_Elem_struct = Search(tree, delete_elem);
+        Erase(tree, del_Elem_struct);
+        printf("\n");
+        InOrder(tree);
+    }
     return 0;
 }
 
